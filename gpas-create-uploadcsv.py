@@ -112,6 +112,10 @@ if __name__ == "__main__":
         fastqs1 = [f for f in path.glob(f"*{options.fastq1_suffix}")]
         fastqs2 = [f for f in path.glob(f"*{options.fastq2_suffix}")]
 
+        # sort the lists alphabetically to ensure the files are paired correctly
+        fastqs1.sort()
+        fastqs2.sort()
+
         assert (
             options.fastq1_suffix != options.fastq2_suffix
         ), "FASTQ suffixes must be different"
