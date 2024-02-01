@@ -30,11 +30,11 @@ def build_csv(
     """
     with open(filename, "w") as out:
         out.write(
-            "batch_name,sample_name,reads_1,reads_2,control,collection_date,country,subdivision,district,specimen_organism,host_organism,instrument_platform\n"
+            "sample_name,reads_1,reads_2,control,collection_date,country,subdivision,district,specimen_organism,host_organism,instrument_platform\n"
         )
         for sample, f1, f2 in zip(guids, fastq1s, fastq2s):
             out.write(
-                f",{sample},{f1},{f2},,{collection_date},{country},,,{pipeline},homo sapiens,{tech}\n"
+                f"{sample},{f1},{f2},,{collection_date},{country},,,{pipeline},homo sapiens,{tech}\n"
             )
 
 
