@@ -18,8 +18,8 @@ def chunks(lst, n):
 def build_csv(
     filename: str,
     guids: List[str],
-    fastq1s: List,
-    fastq2s: List,
+    fastq1_suffix: str,
+    fastq2_suffix: str,
     collection_date: str,
     country: str,
     pipeline: str,
@@ -32,9 +32,9 @@ def build_csv(
         out.write(
             "batch_name,sample_name,reads_1,reads_2,control,collection_date,country,subdivision,district,specimen_organism,host_organism,instrument_platform\n"
         )
-        for sample, f1, f2 in zip(guids, fastq1s, fastq2s):
+        for sample in guids:
             out.write(
-                f",{sample},{f1},{f2},,{collection_date},{country},,,{pipeline},homo sapiens,{tech}\n"
+                f",{sample},{sample}{fastq1_suffix},{sample}{fastq2_suffix},,{collection_date},{country},,,{pipeline},homo sapiens,{tech}\n"
             )
 
 
@@ -138,22 +138,22 @@ if __name__ == "__main__":
         build_csv(
             options.output,
             guids,
-            fastqs1,
-            fastqs2,
+            options.fastq1_suffix,
+            options.fastq2_suffix,
             options.collection_date,
             options.country,
             options.pipeline,
             options.tech,
         )
     else:
-        for i, batch in enumerate(chunks(guids, n_samples_per_batch)):
+        for i, batch_guids in enumerate(chunks(guids, n_samples_per_batch)):
             outfile = f"{options.output.replace('.csv', '')}_{i}.csv"
             batch_files.append(outfile)
             build_csv(
                 outfile,
-                batch,
-                fastqs1,
-                fastqs2,
+                batch_guids,
+                options.fastq1_suffix,
+                options.fastq2_suffix,
                 options.collection_date,
                 options.country,
                 options.pipeline,
